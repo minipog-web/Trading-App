@@ -1,7 +1,7 @@
 {
-  "cumulativeReturn": 9.57,
-  "maxDrawdown": -0.13,
-  "sharpeRatio": 5.133,
-  "totalTrades": 35,
-  "finalValue": 10957.31
+  "cumulativeReturn": 3.56,
+  "maxDrawdown": -0.1,
+  "sharpeRatio": 1.649,
+  "totalTrades": 26,
+  "finalValue": 10355.55
 }

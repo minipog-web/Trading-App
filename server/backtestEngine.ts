@@ -1,5 +1,5 @@
 import { Candle, MacroDataPoint, NewsArticle, MarketDataEngine } from './dataEngine.js';
-import { Technicals, ChartPatternDetector, PredictiveEnsemble, RegimeDetector, VectorAutoregression } from './analyticsEngine.js';
+import { Technicals, ChartPatternDetector, PredictiveEnsemble, RegimeDetector, VectorAutoregression, AnomalyDetector } from './analyticsEngine.js';
 import { RecommendationEngine } from './recommendationEngine.js';
 
 export interface BacktestTrade {
@@ -257,6 +257,7 @@ export class BacktestEngine {
             }
           }
 
+          const anomalies = AnomalyDetector.detectAnomalies(candlesSlice, asset.category, 30);
           const rec = RecommendationEngine.generateRecommendation(
             asset.id,
             asset.category,
@@ -265,7 +266,8 @@ export class BacktestEngine {
             mlOutput,
             regimeName,
             newsUpToDate,
-            grangerInfluence
+            grangerInfluence,
+            anomalies
           );
 
           recommendations.push(rec);

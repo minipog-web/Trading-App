@@ -133,7 +133,7 @@ export class RecommendationEngine {
     const macroScore = this.calculateMacroScore(category, activeRegime);
 
     // 4. Calculate News Score and Breakdown
-    const newsBreakdown = this.calculateNewsScore(assetId, category, recentNews);
+    const newsBreakdown = this.calculateNewsScore(assetId, category, recentNews, lastCandle.date);
     const newsScore = newsBreakdown.newsScore;
 
     // 5. Calculate Cross-Asset Score (0 to 100)
@@ -144,7 +144,7 @@ export class RecommendationEngine {
     const whaleScore = whaleBreakdown.whaleScore;
 
     // 7. Calculate Anomaly Score
-    const anomalyBreakdown = this.calculateAnomalyScore(anomalies);
+    const anomalyBreakdown = this.calculateAnomalyScore(anomalies, lastCandle.date);
     const anomalyScore = anomalyBreakdown.anomalyScore;
 
     // 8. Dynamic Regime-Aware Blending Weights (7 components, total = 1.0)
@@ -709,7 +709,12 @@ export class RecommendationEngine {
     };
   }
 
-  private static calculateNewsScore(assetId: string, category: string, news: NewsArticle[]): NewsBreakdown {
+  private static calculateNewsScore(
+    assetId: string,
+    category: string,
+    news: NewsArticle[],
+    referenceDateStr?: string
+  ): NewsBreakdown {
     // Filter news specific to the asset or general macro
     const relevantNews = news.filter(n => 
       n.assetClass === category || 
@@ -734,8 +739,11 @@ export class RecommendationEngine {
     // Sort by date desc
     const sortedNews = [...relevantNews].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+    const referenceTime = referenceDateStr ? new Date(referenceDateStr).getTime() : Date.now();
+
     for (const article of sortedNews) {
-      const daysAgo = Math.max(0, (Date.now() - new Date(article.date).getTime()) / (1000 * 60 * 60 * 24));
+      const articleTime = new Date(article.date).getTime();
+      const daysAgo = Math.max(0, (referenceTime - articleTime) / (1000 * 60 * 60 * 24));
       // exponential decay factor: half life of 3 days
       const recencyDecay = Math.exp(-daysAgo / 3);
       const impactWeight = article.impact * recencyDecay;
@@ -763,9 +771,19 @@ export class RecommendationEngine {
     };
   }
 
-  private static calculateAnomalyScore(anomalies: any[]): AnomalyDetail {
+  private static calculateAnomalyScore(anomalies: any[], referenceDateStr?: string): AnomalyDetail {
+    const referenceTime = referenceDateStr ? new Date(referenceDateStr).getTime() : Date.now();
+    const fiveDaysMs = 5 * 24 * 60 * 60 * 1000;
+
+    // Filter anomalies to only those that occurred in the last 5 days relative to reference date
+    const recentAnomalies = anomalies.filter(anomaly => {
+      const anomalyTime = new Date(anomaly.date).getTime();
+      const age = referenceTime - anomalyTime;
+      return age >= 0 && age <= fiveDaysMs;
+    });
+
     let baseScore = 50;
-    for (const anomaly of anomalies) {
+    for (const anomaly of recentAnomalies) {
       if (anomaly.condition === 'buy') {
         baseScore += Math.round(anomaly.severity * 4);
       } else if (anomaly.condition === 'sell') {
@@ -777,8 +795,8 @@ export class RecommendationEngine {
 
     return {
       anomalyScore,
-      activeAnomaliesCount: anomalies.length,
-      recentAnomalies: anomalies.slice(0, 5).map(a => ({
+      activeAnomaliesCount: recentAnomalies.length,
+      recentAnomalies: recentAnomalies.slice(0, 5).map(a => ({
         date: a.date,
         type: a.type,
         severity: a.severity,
