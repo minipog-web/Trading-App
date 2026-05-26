@@ -1,0 +1,29 @@
+{
+  "name": "macrosignal-radar-pro",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently --kill-others \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "install:all": "npm install && npm --prefix server install"
+  },
+  "dependencies": {
+    "i18next": "^26.2.0",
+    "lucide-react": "^0.436.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^17.0.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^8.2.2",
+    "typescript": "^5.2.2",
+    "vite": "^8.0.14"
+  }
+}

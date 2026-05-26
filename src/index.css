@@ -1,0 +1,758 @@
+/* ==========================================
+   MacroSignal Radar Pro - Global CSS & Design System
+   ========================================== */
+
+:root {
+  /* Colors */
+  --bg-main: #060913;
+  --bg-card: rgba(15, 22, 42, 0.65);
+  --bg-card-hover: rgba(22, 32, 59, 0.8);
+  --border-color: rgba(255, 255, 255, 0.07);
+  --border-color-hover: rgba(59, 130, 246, 0.3);
+  
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  /* Accent Colors */
+  --color-buy: #10b981;      /* Emerald Green */
+  --color-buy-bg: rgba(16, 185, 129, 0.1);
+  --color-buy-glow: rgba(16, 185, 129, 0.2);
+  
+  --color-sell: #f43f5e;     /* Rose Red */
+  --color-sell-bg: rgba(244, 63, 94, 0.1);
+  --color-sell-glow: rgba(244, 63, 94, 0.2);
+
+  --color-hold: #f59e0b;     /* Amber */
+  --color-hold-bg: rgba(245, 158, 11, 0.1);
+  --color-hold-glow: rgba(245, 158, 11, 0.2);
+
+  --color-info: #3b82f6;     /* Cobalt Blue */
+  --color-info-bg: rgba(59, 130, 246, 0.1);
+
+  --color-regime: #8b5cf6;   /* Violet */
+  --color-regime-bg: rgba(139, 92, 246, 0.1);
+
+  /* Font families */
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Glows and Shadows */
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --glow-blue: 0 0 15px rgba(59, 130, 246, 0.2);
+  --glow-green: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+/* Base resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 22, 42, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Typography elements */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* App Glass Card Layouts */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-glass);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  border-color: var(--border-color-hover);
+  box-shadow: var(--shadow-glass), var(--glow-blue);
+}
+
+/* Rating badge styling */
+.badge-rating {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-rating.strong-buy {
+  background-color: var(--color-buy-bg);
+  color: var(--color-buy);
+  border: 1px solid var(--color-buy);
+  box-shadow: var(--color-buy-glow);
+}
+
+.badge-rating.buy {
+  background-color: var(--color-buy-bg);
+  color: var(--color-buy);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.badge-rating.hold {
+  background-color: var(--color-hold-bg);
+  color: var(--color-hold);
+  border: 1px solid var(--color-hold);
+  box-shadow: var(--color-hold-glow);
+}
+
+.badge-rating.sell {
+  background-color: var(--color-sell-bg);
+  color: var(--color-sell);
+  border: 1px solid var(--color-sell);
+  box-shadow: var(--color-sell-glow);
+}
+
+/* Micro-animations */
+@keyframes pulseGlow {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.03); opacity: 1; box-shadow: 0 0 20px var(--color-regime); }
+  100% { transform: scale(1); opacity: 0.9; }
+}
+
+.pulse-glow-regime {
+  animation: pulseGlow 4s infinite ease-in-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Utility layout styles */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Light Mode Toggle Overrides */
+body.light-mode {
+  --bg-main: #f0f4f9;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-color-hover: rgba(59, 130, 246, 0.5);
+  
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  --shadow-glass: 0 8px 32px 0 rgba(148, 163, 184, 0.15);
+  --glow-blue: 0 0 15px rgba(59, 130, 246, 0.1);
+  --glow-green: 0 0 15px rgba(16, 185, 129, 0.15);
+}
+
+body.light-mode .glass-panel {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Granger Causality Explanation Responsiveness */
+@media (max-width: 900px) {
+  .granger-container {
+    flex-direction: column !important;
+  }
+  .granger-explanation {
+    border-left: none !important;
+    padding-left: 0 !important;
+    border-top: 1px solid var(--border-color) !important;
+    padding-top: 16px !important;
+    margin-top: 10px !important;
+  }
+}
+
+/* ==========================================
+   App Layout Classes (extracted from inline styles)
+   ========================================== */
+
+.app-root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 100vh;
+}
+
+.app-header {
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.app-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-title {
+  font-size: 1.4rem;
+  font-weight: 900;
+  font-family: var(--font-display);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: -0.03em;
+}
+
+.app-title-suffix {
+  color: var(--color-info);
+}
+
+.regime-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  background-color: var(--color-regime-bg);
+  color: var(--color-regime);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.app-header-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeframe-toggle {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.app-nav {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 4px;
+  gap: 10px;
+}
+
+.app-main {
+  flex: 1;
+}
+
+.app-footer {
+  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.app-footer-simulator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ==========================================
+   CandlestickChart Classes (extracted from inline styles)
+   ========================================== */
+
+.chart-panel {
+  padding: 16px;
+  position: relative;
+}
+
+.chart-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chart-toolbar-left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.chart-toolbar-right {
+  display: flex;
+  gap: 4px;
+}
+
+.chart-anomaly-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid var(--border-color);
+}
+
+.chart-anomaly-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.anomaly-arrow--buy {
+  color: var(--color-buy);
+  font-weight: bold;
+}
+
+.anomaly-arrow--sell {
+  color: var(--color-sell);
+  font-weight: bold;
+}
+
+.chart-svg-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ==========================================
+   Dashboard Asset Card Classes
+   ========================================== */
+
+.asset-card {
+  cursor: pointer;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.asset-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.asset-card-id {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  display: block;
+}
+
+.asset-card-name {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.asset-card-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.asset-card-price {
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  display: block;
+}
+
+.asset-card-change {
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.asset-card-change--up {
+  color: var(--color-buy);
+}
+
+.asset-card-change--down {
+  color: var(--color-sell);
+}
+
+.asset-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+  font-size: 0.8rem;
+}
+
+.asset-card-score-label {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.asset-card-score-value {
+  font-weight: 700;
+}
+
+/* ==========================================
+   Dashboard Summary Cards & Root Layout
+   ========================================== */
+
+.dash-root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dash-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.dash-summary-card {
+  padding: 16px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.dash-summary-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dash-summary-icon--regime {
+  background-color: var(--color-regime-bg);
+  color: var(--color-regime);
+}
+
+.dash-summary-icon--buy {
+  background-color: var(--color-buy-bg);
+  color: var(--color-buy);
+}
+
+.dash-summary-icon--info {
+  background-color: var(--color-info-bg);
+  color: var(--color-info);
+}
+
+.dash-summary-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.dash-summary-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  display: block;
+}
+
+.dash-summary-value--regime {
+  color: var(--color-regime);
+}
+
+.dash-summary-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+.text-buy {
+  color: var(--color-buy);
+}
+
+.text-sell {
+  color: var(--color-sell);
+}
+
+/* ==========================================
+   Dashboard Recommendations Panel
+   ========================================== */
+
+.dash-recs-panel {
+  padding: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  box-shadow: var(--shadow-glass), 0 0 25px rgba(16, 185, 129, 0.05);
+}
+
+.dash-recs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dash-recs-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.dash-recs-sparkle {
+  color: var(--color-buy);
+}
+
+.dash-recs-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.dash-recs-badge {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+}
+
+.dash-recs-loading {
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dash-recs-loading-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.dash-recs-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.dash-recs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ==========================================
+   Dashboard Recommendation Card
+   ========================================== */
+
+.rec-card {
+  background-color: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.rec-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.rec-ticker-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+}
+
+.rec-ticker-link {
+  cursor: pointer;
+}
+
+.rec-ticker-id {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  display: block;
+  color: var(--text-primary);
+}
+
+.rec-ticker-name {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  display: block;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rec-category-badge {
+  font-size: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.rec-category-badge--crypto {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+}
+
+.rec-category-badge--equity {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+}
+
+.rec-price-group {
+  min-width: 100px;
+}
+
+.rec-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  display: block;
+}
+
+.rec-change {
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rec-change--up { color: var(--color-buy); }
+.rec-change--down { color: var(--color-sell); }
+
+.rec-score-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+  flex: 1;
+}
+
+.rec-score-bar-wrap {
+  flex: 1;
+}
+
+.rec-score-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  margin-bottom: 3px;
+}
+
+.rec-score-label { color: var(--text-secondary); }
+.rec-score-value { color: var(--color-buy); }
+
+.rec-score-track {
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.rec-score-fill {
+  height: 100%;
+  background-color: var(--color-buy);
+  border-radius: 3px;
+  box-shadow: var(--glow-green);
+}
+
+.rec-rating-badge {
+  padding: 3px 8px;
+  font-size: 0.7rem;
+}
+
+.rec-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-rationale-btn {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.toggle-rationale-btn--expanded {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.rec-analyze-btn {
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
