@@ -1,0 +1,65 @@
+{
+  "bestSharpe": 3.783979871129293,
+  "bestReturn": 6.570234821350223,
+  "optimalWeights": {
+    "tech": 0.2,
+    "ml": 0.15,
+    "macro": 0.15,
+    "news": 0.15,
+    "cross": 0.1,
+    "whale": 0.15,
+    "anomaly": 0.1
+  },
+  "optimalRegimeWeights": {
+    "Crisis": {
+      "macro": 0.3,
+      "news": 0.15,
+      "tech": 0.15,
+      "ml": 0.05,
+      "cross": 0.1,
+      "whale": 0.1,
+      "anomaly": 0.15
+    },
+    "Low-volatility": {
+      "tech": 0.3,
+      "ml": 0.15,
+      "macro": 0.1,
+      "news": 0.1,
+      "cross": 0.1,
+      "whale": 0.15,
+      "anomaly": 0.1
+    },
+    "Liquidity-expansion": {
+      "ml": 0.25,
+      "tech": 0.2,
+      "macro": 0.1,
+      "news": 0.1,
+      "cross": 0.1,
+      "whale": 0.15,
+      "anomaly": 0.1
+    },
+    "High-inflation": {
+      "macro": 0.25,
+      "tech": 0.15,
+      "ml": 0.15,
+      "news": 0.15,
+      "cross": 0.1,
+      "whale": 0.1,
+      "anomaly": 0.1
+    },
+    "Rate-hiking": {
+      "macro": 0.25,
+      "tech": 0.15,
+      "ml": 0.1,
+      "news": 0.15,
+      "cross": 0.1,
+      "whale": 0.15,
+      "anomaly": 0.1
+    }
+  },
+  "optimalThresholds": {
+    "strongBuy": 70,
+    "buy": 52,
+    "hold": 42
+  }
+}

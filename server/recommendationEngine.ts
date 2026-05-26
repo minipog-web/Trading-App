@@ -102,6 +102,30 @@ export interface Recommendation {
 }
 
 export class RecommendationEngine {
+  public static baseWeights = {
+    tech: 0.20,
+    ml: 0.15,
+    macro: 0.15,
+    news: 0.15,
+    cross: 0.10,
+    whale: 0.15,
+    anomaly: 0.10
+  };
+
+  public static regimeWeights: Record<string, Partial<typeof RecommendationEngine.baseWeights>> = {
+    'Crisis': { macro: 0.30, news: 0.15, tech: 0.15, ml: 0.05, cross: 0.10, whale: 0.10, anomaly: 0.15 },
+    'Low-volatility': { tech: 0.30, ml: 0.15, macro: 0.10, news: 0.10, cross: 0.10, whale: 0.15, anomaly: 0.10 },
+    'Liquidity-expansion': { ml: 0.25, tech: 0.20, macro: 0.10, news: 0.10, cross: 0.10, whale: 0.15, anomaly: 0.10 },
+    'High-inflation': { macro: 0.25, tech: 0.15, ml: 0.15, news: 0.15, cross: 0.10, whale: 0.10, anomaly: 0.10 },
+    'Rate-hiking': { macro: 0.25, tech: 0.15, ml: 0.10, news: 0.15, cross: 0.10, whale: 0.15, anomaly: 0.10 }
+  };
+
+  public static thresholds = {
+    strongBuy: 70,
+    buy: 52,
+    hold: 42
+  };
+
   static generateRecommendation(
     assetId: string,
     category: 'crypto' | 'equity' | 'commodity',
@@ -148,61 +172,16 @@ export class RecommendationEngine {
     const anomalyScore = anomalyBreakdown.anomalyScore;
 
     // 8. Dynamic Regime-Aware Blending Weights (7 components, total = 1.0)
-    let wTech = 0.20;
-    let wML = 0.15;
-    let wMacro = 0.15;
-    let wNews = 0.15;
-    let wCross = 0.10;
-    let wWhale = 0.15;
-    let wAnomaly = 0.10;
+    const base = RecommendationEngine.baseWeights;
+    const regimeOverrides = RecommendationEngine.regimeWeights[activeRegime] || {};
 
-    switch (activeRegime) {
-      case 'Crisis':
-        wMacro = 0.30;
-        wNews = 0.15;
-        wTech = 0.10;
-        wML = 0.10;
-        wCross = 0.10;
-        wWhale = 0.10;
-        wAnomaly = 0.15;
-        break;
-      case 'Low-volatility':
-        wTech = 0.30;
-        wML = 0.15;
-        wMacro = 0.10;
-        wNews = 0.10;
-        wCross = 0.10;
-        wWhale = 0.15;
-        wAnomaly = 0.10;
-        break;
-      case 'Liquidity-expansion':
-        wML = 0.25;
-        wTech = 0.20;
-        wMacro = 0.10;
-        wNews = 0.10;
-        wCross = 0.10;
-        wWhale = 0.15;
-        wAnomaly = 0.10;
-        break;
-      case 'High-inflation':
-        wMacro = 0.25;
-        wTech = 0.15;
-        wML = 0.15;
-        wNews = 0.15;
-        wCross = 0.10;
-        wWhale = 0.10;
-        wAnomaly = 0.10;
-        break;
-      case 'Rate-hiking':
-        wMacro = 0.25;
-        wTech = 0.15;
-        wML = 0.10;
-        wNews = 0.15;
-        wCross = 0.10;
-        wWhale = 0.15;
-        wAnomaly = 0.10;
-        break;
-    }
+    const wTech = regimeOverrides.tech ?? base.tech;
+    const wML = regimeOverrides.ml ?? base.ml;
+    const wMacro = regimeOverrides.macro ?? base.macro;
+    const wNews = regimeOverrides.news ?? base.news;
+    const wCross = regimeOverrides.cross ?? base.cross;
+    const wWhale = regimeOverrides.whale ?? base.whale;
+    const wAnomaly = regimeOverrides.anomaly ?? base.anomaly;
 
     // Weighted Score
     const finalScore = Math.round(
@@ -217,11 +196,11 @@ export class RecommendationEngine {
 
     // Determine Final Rating
     let rating: 'Strong Buy' | 'Buy' | 'Hold' | 'Sell' = 'Hold';
-    if (finalScore >= 74) {
+    if (finalScore >= RecommendationEngine.thresholds.strongBuy) {
       rating = 'Strong Buy';
-    } else if (finalScore >= 58) {
+    } else if (finalScore >= RecommendationEngine.thresholds.buy) {
       rating = 'Buy';
-    } else if (finalScore >= 42) {
+    } else if (finalScore >= RecommendationEngine.thresholds.hold) {
       rating = 'Hold';
     } else {
       rating = 'Sell';
